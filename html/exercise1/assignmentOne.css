@@ -1,0 +1,9 @@
+li {
+    color: red;
+    font-weight: bold;
+};
+
+a {
+    color: aqua;
+    text-shadow: black 1px 1px 1px;
+}
