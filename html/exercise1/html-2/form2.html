@@ -38,14 +38,14 @@
       output.textContent = price.value;
     });
 
-    const color = document.querySelector("#color");
-    const colorText=document.getElementById("#colorLabel");
-    const color_out = document.getElementById("#color-output");
+    const color = document.getElementById('color');
+    const colorText=document.getElementById('colorlabel');
+    const color_out = document.getElementById('coloroutput');
 
     color.addEventListener("input", () => {
         
-        console.log(color_out.textContent);
-        colorText.style.color = color_out.textContent;
+        
+        colorText.style.color = color_out.value;
     })
 
 
