@@ -1,0 +1,32 @@
+@font-face {
+    font-family: "fff-Tusj";
+    src: url(FFF-Tusj/FFF_Tusj.ttf);
+}
+
+ul li {
+    background-image: url("./me15.jpg");
+    padding-left:2rem;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 1.6rem 1.6rem;
+    font-family: 'fff-Tusj';
+    
+}
+
+ul {
+    padding-left: 2rem;
+    list-style-type: none;
+}
+
+
+a:hover {
+    color:lightcoral;
+}
+
+#topLink {
+    font-family: 'fff-Tusj';
+    border-radius: 10rem;
+    width: auto;
+    height: auto;
+    background-color: black;
+}

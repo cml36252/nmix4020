@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms1</title>
+    <style>header {font-size: 24px};</style>
+</head>
+<body>
+    <header>Form Practice</header>
+    <main>
+        <form action="https://apweb.quest/demos/receiver.html" method="get">
+            <label for="price">Choose a maximum house price: </label>
+            <input
+            type="range"
+            name="price"
+            id="price"
+            min="50000"
+            max="500000"
+            step="1000"
+            value="250000" />
+            <output class="price-output" for="price"></output>
+            <label for="color" id="colorlabel">Pick a color:</label>
+            <input type="color" name="color" id="color" />
+            <output id="color-output" for="color"></output>
+
+        </form>
+    </main>
+</body>
+
+<script> 
+    const price = document.querySelector("#price");
+    const output = document.querySelector(".price-output");
+    
+    output.textContent = price.value;
+    
+    price.addEventListener("input", () => {
+      output.textContent = price.value;
+    });
+
+    const color = document.getElementById('color');
+    const colorText=document.getElementById('colorlabel');
+    const color_out = document.getElementById('coloroutput');
+
+    color.addEventListener("input", () => {
+        
+        
+        colorText.style.color = color_out.value;
+    })
+
+
+
+    </script>
+</html>
