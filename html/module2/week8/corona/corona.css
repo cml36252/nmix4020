@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+#main {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Apply grid to both columns with same row heights */
+#leftCol {
+    flex: 2;
+    padding-right: 20px;
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 25px;
+}
+
+#rightCol {
+    flex: 1;
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 25px;
+}
+
+.left {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 0;
+    height: 300px /* Remove bottom margin to prevent misalignment */
+}
+
+.left a {
+    color: #2a4b8d;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    
+}
+
+.left a:hover {
+    color: #1a365d;
+    text-decoration: underline;
+}
+
+.left p {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    
+}
+
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: white;
+    margin-bottom: 0; 
+    height: 300px; 
+}
+
+.card-img-top {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
