@@ -18,15 +18,27 @@ let classObject = {"AlexW": "I am the oldest of two boys, two girls; two redhead
 "Niambi": "I was born in New York.",
 "Tyler": "I currently hold 5 national records in swimming for the country Bermuda."}
  
-let nameArray =["AlexW","AlexC","Allison","Amy","Andrea","AnnaGrace","Brandon","Cydney","Elizabeth","Grant","Haleigh","Hua","Jenny","Kaitlyn","McKenzie ","Melissa","Morgan","Niambi","Tyler"];
+let nameArray =["AlexW","AlexC","Allison","Amy","Andrea","AnnaGrace","Brandon","Cydney","Elizabeth","Grant","Haleigh","Hua","Jenny","Kaitlyn","McKenzie","Melissa","Morgan","Niambi","Tyler"];
 
- 
+let nameList = document.querySelector('#aname')
 
+for (i=0; i<nameArray.length; i++){
+    nameList.innerHTML += `<option value="${nameArray[i]}">${nameArray[i]}</option>`
+}
+quote()
 
 function quote(){
+
     let sName = document.querySelector('#aname').value
-    
-    let quote = document.querySelector('#aboutme')
+    if (classObject.hasOwnProperty(sName)){
+        document.querySelector('#aboutme').innerHTML = classObject[sName];
+        document.querySelector('#image').innerHTML = `<img src="pix/${sName}.jpg" alt="${sName}">`;
+
+    } else {
+        document.querySelector('#aboutme').innerHTML = "Name not found";
+
+    }
+     
 
 
   
