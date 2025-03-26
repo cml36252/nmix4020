@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<button onclick="qa ()">Load New Question Set</button>
+<div id="mainDiv">
+
+</div>
+
+</body>
+<script>
+var divLoad = document.querySelector("#mainDiv");
+var question = document. querySelector ("#question");
+var answer = document. querySelector ("#answer");
+var category = document. querySelector ("#category");
+var theAnswer = []
+function qa(){
+    $.getJSON('https://the-trivia-api.com/v2/questions/', function(data) { 
+        divLoad.innerHTML = ""
+
+        for (i = 0; i < 10; i++) {
+        divLoad.innerHTML += "Category: " + data[i].category + "<br>";
+        divLoad.innerHTML += data[i].question.text + "<br>";
+        theAnswer[i] = data[i].correctAnswer;
+        } // for 
+
+    });
+}
+function showAnswer (){
+
+   answer.innerHTML = theAnswer;
+
+}
+
+</script>
+</html>
