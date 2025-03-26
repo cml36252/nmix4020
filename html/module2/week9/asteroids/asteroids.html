@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style> .max {background-color: black; border-radius: 50%; float: left; margin: 10px; z-index: 0;}
+    .min {background-color: grey; border-radius: 50%; flex: auto; align-items:flex-end; margin: 10px; z-index: 1;} </style>
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <p id="count">
+
+    </p>
+
+</div>
+
+<div id = "showData">
+
+
+</div>
+
+    
+
+    <div id="astlist">
+
+
+    </div>
+    
+</body>
+<script>
+    let asteroidDisplay = document.querySelector('body')
+$(document).ready(function() {
+    
+    $.getJSON('https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=uJcVtRGvbAu95fHXqQEFNYkmMGyJV2czf8wLgG6l', function(data) {
+        var howMany = data.near_earth_objects.length;
+        let dataSource = data.near_earth_objects;
+        for (var i = 0; i < dataSource.length; i++) {
+            let maxWidth = dataSource[i].estimated_diameter.kilometers.estimated_diameter_max * 6;
+            let minWidth = dataSource[i].estimated_diameter.kilometers.estimated_diameter_min * 6;
+            let name = dataSource[i].name;
+            asteroidDisplay.innerHTML+= "<div class='max' id='"+name+"' style='width:"+maxWidth+"px;height:"+maxWidth+"px'> <div class='min' id='"+name+"'style='width:"+minWidth+"px;height:"+minWidth+"px'<\div></div>"
+            if (dataSource[i].is_potentially_hazardous_asteroid == true) {
+                document.getElementById(name).style.backgroundColor = "red";
+            }
+        }
+       
+    })
+})</script>
+</html>
