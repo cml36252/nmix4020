@@ -25,18 +25,24 @@ function qa(){
         divLoad.innerHTML = ""
 
         for (i = 0; i < 10; i++) {
-        divLoad.innerHTML += "Category: " + data[i].category + "<br>";
-        divLoad.innerHTML += data[i].question.text + "<br>";
-        theAnswer[i] = data[i].correctAnswer;
+        divLoad.innerHTML += "<h3>Category: " + data[i].category + "<br></h3>";
+        divLoad.innerHTML += "<div id = 'answers" + i + "'>" + data[i].question.text + "<br></div>";
+        theAnswer[i] =data[i].correctAnswer; // The .push here makes it so that subsequent calls to the function will add to the array instead of overwriting it
+
+        divLoad.innerHTML += "<button onclick='showAnswer(" + i + ")'>Show Answer</button><br>";
         } // for 
 
     });
 }
-function showAnswer (){
+function showAnswer (a){
 
-   answer.innerHTML = theAnswer;
-
+    let something = "#answers" + a;
+    let somethingelse = document. querySelector (something);
+    somethingelse.innerHTML = theAnswer [a];
 }
+   //answer.innerHTML = theAnswer;
+
+
 
 </script>
 </html>
