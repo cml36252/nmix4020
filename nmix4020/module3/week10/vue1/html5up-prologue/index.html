@@ -10,7 +10,9 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	</head>
+	
 	<body class="is-preload">
 
 		<!-- Header -->
@@ -20,18 +22,21 @@
 
 					<!-- Logo -->
 						<div id="logo">
-							<span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span>
-							<h1 id="title">Jane Doe</h1>
-							<p>Hyperspace Engineer</p>
+							<span class="image avatar48"><img :src="avatar" alt="" /></span>
+							<h1 id="title">{{yourName}}</h1>
+							<p>{{description}}</p>
 						</div>
 
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="#top" id="top-link"><span class="icon solid fa-home">Intro</span></a></li>
-								<li><a href="#portfolio" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
-								<li><a href="#about" id="about-link"><span class="icon solid fa-user">About Me</span></a></li>
-								<li><a href="#contact" id="contact-link"><span class="icon solid fa-envelope">Contact</span></a></li>
+								<li><a href="#top" id="top-link"><span class="icon solid fa-home">{{linkOne}}</span></a></li>
+								<li><a href="#portfolio" id="portfolio-link"><span class="icon solid fa-th">{{link2}}</span></a></li>
+								<li><a href="#about" id="about-link"><span class="icon solid fa-user">{{link3}}</span></a></li>
+								<li><a href="#list" id='list-link'><span class="icon fa-list">{{link5}}</span></a></li>
+								<li><a href="#conditional" id='conditional-link'><span class= "icon fa-list">{{link6}}</span></a></li>
+								<li><a href="#function" id='conditional-link'><span class= "icon fa-list">{{link7}}</span></a></li>
+								<li><a href="#contact" id="contact-link"><span class="icon solid fa-envelope">{{link4}}</span></a></li>
 							</ul>
 						</nav>
 
@@ -60,14 +65,12 @@
 						<div class="container">
 
 							<header>
-								<h2 class="alt">Hi! I'm <strong>Prologue</strong>, a <a href="http://html5up.net/license">free</a> responsive<br />
-								site template designed by <a href="http://html5up.net">HTML5 UP</a>.</h2>
-								<p>Ligula scelerisque justo sem accumsan diam quis<br />
-								vitae natoque dictum sollicitudin elementum.</p>
+								<h2 class="alt">Hi! I'm <strong>{{name}}</strong>, a {{title}}.</h2>
+								<p>{{description}}</p>
 							</header>
 
 							<footer>
-								<a href="#portfolio" class="button scrolly">Magna Aliquam</a>
+								<a href="#portfolio" class="button scrolly">{{linkTitle}}</a>
 							</footer>
 
 						</div>
@@ -78,7 +81,7 @@
 						<div class="container">
 
 							<header>
-								<h2>Portfolio</h2>
+								<h2>{{portfolioTitle}}</h2>
 							</header>
 
 							<p>Vitae natoque dictum etiam semper magnis enim feugiat convallis convallis
@@ -89,43 +92,43 @@
 							<div class="row">
 								<div class="col-4 col-12-mobile">
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img :src="image1" alt="" /></a>
 										<header>
-											<h3>Ipsum Feugiat</h3>
+											<h3>{{caption}}</h3>
 										</header>
 									</article>
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img :src="image2" alt="" /></a>
 										<header>
-											<h3>Rhoncus Semper</h3>
-										</header>
-									</article>
-								</div>
-								<div class="col-4 col-12-mobile">
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
-										<header>
-											<h3>Magna Nullam</h3>
-										</header>
-									</article>
-									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
-										<header>
-											<h3>Natoque Vitae</h3>
+											<h3>{{caption}}</h3>
 										</header>
 									</article>
 								</div>
 								<div class="col-4 col-12-mobile">
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img :src="image3" alt="" /></a>
 										<header>
-											<h3>Dolor Penatibus</h3>
+											<h3>{{caption}}</h3>
 										</header>
 									</article>
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img :src="image4" alt="" /></a>
 										<header>
-											<h3>Orci Convallis</h3>
+											<h3>{{caption}}</h3>
+										</header>
+									</article>
+								</div>
+								<div class="col-4 col-12-mobile">
+									<article class="item">
+										<a href="#" class="image fit"><img :src="image5" alt="" /></a>
+										<header>
+											<h3>{{caption}}</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="#" class="image fit"><img :src="image6" alt="" /></a>
+										<header>
+											<h3>{{caption}}</h3>
 										</header>
 									</article>
 								</div>
@@ -139,18 +142,45 @@
 						<div class="container">
 
 							<header>
-								<h2>About Me</h2>
+								<h2>{{aboutTitle}}</h2>
 							</header>
 
-							<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
+							<a href="#" class="image featured"><img :src="aboutImage" alt="" /></a>
 
-							<p>Tincidunt eu elit diam magnis pretium accumsan etiam id urna. Ridiculus
-							ultricies curae quis et rhoncus velit. Lobortis elementum aliquet nec vitae
-							laoreet eget cubilia quam non etiam odio tincidunt montes. Elementum sem
-							parturient nulla quam placerat viverra mauris non cum elit tempus ullamcorper
-							dolor. Libero rutrum ut lacinia donec curae mus vel quisque sociis nec
-							ornare iaculis.</p>
+							<p>{{aboutText}}</p>
 
+						</div>
+					</section>
+
+					<!--List-->
+					<section id = "list">
+						<div class="container">
+							<ol >
+								<li v-for="favorite in favorites"> {{favorite}}</li>
+							</ol>
+						</div>
+					</section>
+
+					<!--Conditional-->
+					<section id = "conditional">
+						<div class="container">
+							<p>What is the name of your teacher?</p> <!--<input v-model="teacherName">-->
+							<p @click="teacherName = 'Emuel'">Emuel</p>
+							<p @click="teacherName = John">John</p>
+							<p @click="teacherName = 'Claire'">Claire</p>
+							<p @click="teacherName = 'Megan'">Megan</p>
+							<p v-if="teacherName == 'Emuel'">Correct, The teacher's name is {{teacherName}}</p>
+							<p v-if="teacherName != 'Emuel' && teacherName != ''">Not yet, keep trying</p>
+						</div>
+					</section>
+
+					<!--Function-->
+					<section id = "function">
+						<div class="container">
+							<div id="color" :style="{backgroundColor: bgColor, width: divWidth}" style="height: 300px; float: left; ">
+								<p v-for="color in colors" @mouseover="changeColor(color)" :style="{backgroundColor: color}" > {{color}}</p>
+								<p v-for="width in divWidths" @mouseover="changeWidth(width)"> {{width}}</p>
+							</div>
 						</div>
 					</section>
 
@@ -159,13 +189,10 @@
 						<div class="container">
 
 							<header>
-								<h2>Contact</h2>
+								<h2>{{contactTitle}}</h2>
 							</header>
 
-							<p>Elementum sem parturient nulla quam placerat viverra
-							mauris non cum elit tempus ullamcorper dolor. Libero rutrum ut lacinia
-							donec curae mus. Eleifend id porttitor ac ultricies lobortis sem nunc
-							orci ridiculus faucibus a consectetur. Porttitor curae mauris urna mi dolor.</p>
+							<p>{{contactText}}</p>
 
 							<form method="post" action="#">
 								<div class="row">
@@ -203,6 +230,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/newVue.js"></script>
 
 	</body>
 </html>
