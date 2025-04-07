@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>img {width:400px;}</style>
+    <title></title>
+</head>
+
+<body>
+    <div id="app" >
+        <button @click="showme('cocker')">Cocker</button>
+        <button @click="showme('brittany')">Brittany</button>
+        <button @click="showme('blenheim')">Blenheim</button>
+        <button @click="showme('irish')">Irish</button>
+        <button @click="showme('japanese')">Japanese</button>
+        <button @click="showme('sussex')">Sussex</button>
+        <button @click="showme('welsh')">Welsh</button>
+        <p><button @click='slider()'>click me</button></p>
+        <img :src="whichDawg">
+</div>
+   
+</body>
+</html>
+<script src="dogApi.js"></script>
