@@ -1,7 +1,9 @@
 new Vue({
     el: '#app',
     data: {
-        catArray: []
+        catArray: [],
+        dpart1: "https://cdn2.thecatapi.com/images/",
+        dpart2: ".jpg"
     },
     created() {
         this.loadNextImage();

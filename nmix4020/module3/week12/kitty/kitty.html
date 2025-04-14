@@ -6,11 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="kitty.css">
     <title>Cat Stuff</title>
 </head>
 
 <body>
     <div id="app">
+        <div v-for="eachCat in catArray">
+            {{eachCat.name}} 
+            <img :src="dpart1+eachCat.reference_image_id+dpart2">
+            <br>
+            Description: {{eachCat.description}}
+            <br>
+            Temperament: {{eachCat.temperament}}
+            <br>
+            Origin: {{eachCat.origin}}
+
+            <ul>
+                <li :style="{ width: (parseInt(eachCat.weight.imperial.split(' - ')[1]) * 3) + '%' }">
+                    <div class="bar-label">Weight:</div>
+                    <span class="bar-value">{{eachCat.weight.imperial}} lbs</span>
+                </li>
+                
+                <li :style="{ width: (parseInt(eachCat.life_span.split(' - ')[1] || eachCat.life_span) * 3) + '%' }">
+                    <div class="bar-label">Lifespan:</div>
+                    <span class="bar-value">{{eachCat.life_span}} years</span>
+                </li>
+                
+                <li :style="{ width: (eachCat.affection_level * 6) + '%' }">
+                    <div class="bar-label">Affection Level:</div>
+                    <span class="bar-value">{{eachCat.affection_level}}</span>
+                </li>
+            </ul> 
+
+           
+        </div>
+
 
 
     </div>
