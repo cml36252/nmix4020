@@ -30,6 +30,8 @@ function init() {
 		scene,
 		camera 
 	);
+
+	return scene
 }
 
 function getBox(w, h, d) {
@@ -59,4 +61,4 @@ function getPlane(size) {
 	return mesh;
 }
 
-init();
+var scene = init();

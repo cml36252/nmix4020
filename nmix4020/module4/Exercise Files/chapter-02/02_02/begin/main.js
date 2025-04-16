@@ -26,10 +26,7 @@ function init() {
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.getElementById('webgl').appendChild(renderer.domElement);
-	renderer.render(
-		scene,
-		camera 
-	);
+	update(renderer, scene, camera);
 
 	return scene;
 }
@@ -62,3 +59,17 @@ function getPlane(size) {
 }
 
 var scene = init();
+
+function update(renderer, scene, camera) {
+
+	renderer.render(
+		scene, 
+		camera
+	)
+	requestAnimationFrame(function() {
+		update(renderer, scene, camera);
+	});
+
+	scene.children[0].rotation.y += 0.01;
+	
+}
