@@ -8,33 +8,28 @@ function init() {
 		1, // near clipping plane
 		1000 // far clipping plane
 	);
-	camera.position.z = 0;
+	camera.position.z = 30;
 	camera.position.x = 0;
-	camera.position.y = 1;
+	camera.position.y = 20;
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-	var particleGeo = new THREE.Geometry();
+	//var particleGeo = new THREE.Geometry();
 	var particleMat = new THREE.PointsMaterial({
 		color: 'rgb(255, 255, 255)',
-		size: 1,
-		map: new THREE.TextureLoader().load('/assets/textures/particle.jpg'),
+		size: 0.25,
+		map: new THREE.TextureLoader().load('../../../assets/textures/particle.jpg'),
 		transparent: true,
 		blending: THREE.AdditiveBlending,
 		depthWrite: false
 	});
 
-	var particleCount = 20000;
-	var particleDistance = 100;
-
-	for (var i=0; i<particleCount; i++) {
-		var posX = (Math.random() - 0.5) * particleDistance;
-		var posY = (Math.random() - 0.5) * particleDistance;
-		var posZ = (Math.random() - 0.5) * particleDistance;
-		var particle = new THREE.Vector3(posX, posY, posZ);
-
-		particleGeo.vertices.push(particle);
-	}
-
+	var particleGeo = new THREE.SphereGeometry(10, 64, 64);
+	particleGeo.vertices.forEach(function(vertex) {
+		
+		vertex.x += (Math.random() - 0.5);
+		vertex.y += (Math.random() - 0.5);
+		vertex.z += (Math.random() - 0.5);
+	})
 	var particleSystem = new THREE.Points(
 		particleGeo,
 		particleMat
@@ -63,31 +58,31 @@ function update(renderer, scene, camera, controls) {
 	controls.update();
 	renderer.render(scene, camera);
 
-	var particleSystem = scene.getObjectByName('particleSystem');
-	particleSystem.rotation.y += 0.005;
+	 var particleSystem = scene.getObjectByName('particleSystem');
+	 particleSystem.rotation.y += 0.005;
 
-	particleSystem.geometry.vertices.forEach(function(particle) {
-		particle.x += (Math.random() - 1) * 0.1;
-		particle.y += (Math.random() - 0.75) * 0.1;
-		particle.z += (Math.random()) * 0.1;
+	// particleSystem.geometry.vertices.forEach(function(particle) {
+	// 	particle.x += (Math.random() - 1) * 0.1;
+	// 	particle.y += (Math.random() - 0.75) * 0.1;
+	// 	particle.z += (Math.random()) * 0.1;
 
-		if (particle.x < -50) {
-			particle.x = 50;
-		}
+	// 	if (particle.x < -50) {
+	// 		particle.x = 50;
+	// 	}
 
-		if (particle.y < -50) {
-			particle.y = 50;
-		}
+	// 	if (particle.y < -50) {
+	// 		particle.y = 50;
+	// 	}
 
-		if (particle.z < -50) {
-			particle.z = 50;
-		}
+	// 	if (particle.z < -50) {
+	// 		particle.z = 50;
+	// 	}
 
-		if (particle.z > 50) {
-			particle.z = -50;
-		}
-	});
-	particleSystem.geometry.verticesNeedUpdate = true;
+	// 	if (particle.z > 50) {
+	// 		particle.z = -50;
+	// 	}
+	// });
+	// particleSystem.geometry.verticesNeedUpdate = true;
 	
 	requestAnimationFrame(function() {
 		update(renderer, scene, camera, controls);

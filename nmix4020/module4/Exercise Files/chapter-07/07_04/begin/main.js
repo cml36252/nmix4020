@@ -1,5 +1,7 @@
 function init() {
 	var scene = new THREE.Scene();
+	var stats = new Stats()
+	document.body.appendChild(stats.dom);
 
 	// camera
 	var camera = new THREE.PerspectiveCamera(
@@ -16,7 +18,7 @@ function init() {
 	var particleMat = new THREE.PointsMaterial({
 		color: 'rgb(255, 255, 255)',
 		size: 0.25,
-		map: new THREE.TextureLoader().load('/assets/textures/particle.jpg'),
+		map: new THREE.TextureLoader().load('../../../assets/textures/particle.jpg'),
 		transparent: true,
 		blending: THREE.AdditiveBlending,
 		depthWrite: false
@@ -48,21 +50,22 @@ function init() {
 
 	document.getElementById('webgl').appendChild(renderer.domElement);
 
-	update(renderer, scene, camera, controls);
+	update(renderer, scene, camera, controls, stats);
 
 	return scene;
 }
 
 
-function update(renderer, scene, camera, controls) {
+function update(renderer, scene, camera, controls, stats) {
 	controls.update();
+	stats.update();
 	renderer.render(scene, camera);
 
 	var particleSystem = scene.getObjectByName('particleSystem');
 	particleSystem.rotation.y += 0.005;
 	
 	requestAnimationFrame(function() {
-		update(renderer, scene, camera, controls);
+		update(renderer, scene, camera, controls, stats);
 	});
 }
 

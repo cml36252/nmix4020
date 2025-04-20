@@ -3,10 +3,10 @@ function init() {
 	var gui = new dat.GUI();
 
 	// initialize objects
-	var sphereMaterial = getMaterial('basic', 'rgb(255, 0, 0)');
+	var sphereMaterial = getMaterial('phong', 'rgb(255, 0, 0)');
 	var sphere = getSphere(sphereMaterial, 1, 24);
 
-	var planeMaterial = getMaterial('basic', 'rgb(0, 0, 255)');
+	var planeMaterial = getMaterial('phong', 'rgb(0, 0, 255)');
 	var plane = getPlane(planeMaterial, 30);
 
 	var lightLeft = getSpotLight(1, 'rgb(255, 220, 180)');
@@ -38,6 +38,11 @@ function init() {
 	folder2.add(lightRight.position, 'x', -5, 15);
 	folder2.add(lightRight.position, 'y', -5, 15);
 	folder2.add(lightRight.position, 'z', -5, 15);
+
+	var folder3 = gui.addFolder('material');
+	folder3.add(sphereMaterial, 'shininess', 0, 1000);
+	folder3.add(planeMaterial, 'shininess', 0, 1000);
+	folder3.open()	
 
 	// add objects to the scene
 	scene.add(sphere);
@@ -112,8 +117,8 @@ function getSpotLight(intensity, color) {
 	light.penumbra = 0.5;
 
 	//Set up shadow properties for the light
-	light.shadow.mapSize.width = 1024;  // default: 512
-	light.shadow.mapSize.height = 1024; // default: 512
+	light.shadow.mapSize.width = 2048;  // default: 512
+	light.shadow.mapSize.height = 2048; // default: 512
 	light.shadow.bias = 0.001;
 
 	return light;

@@ -40,7 +40,7 @@ function init() {
 	lightBottom.position.z = 0;
 
 	// load the environment map
-	var path = '/assets/cubemap/';
+	var path = '../../../assets/cubemap/';
 	var format = '.jpg';
 	var fileNames = ['px', 'nx', 'py', 'ny', 'pz', 'nz'];
 
@@ -51,8 +51,8 @@ function init() {
 
 	// manipulate materials
 	// var loader = new THREE.TextureLoader();
-	// objMaterial.roughnessMap = loader.load('/assets/textures/scratch.jpg');
-	// objMaterial.bumpMap = loader.load('/assets/textures/scratch.jpg');
+	// objMaterial.roughnessMap = loader.load('../../../assets/textures/scratch.jpg');
+	// objMaterial.bumpMap = loader.load('../../../assets/textures/scratch.jpg');
 	// objMaterial.bumpScale = 0.01;
 	// objMaterial.envMap = reflectionCube;
 

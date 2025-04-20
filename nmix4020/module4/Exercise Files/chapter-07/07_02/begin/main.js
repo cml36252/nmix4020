@@ -15,13 +15,13 @@ function init() {
 
 	var particleGeo = new THREE.Geometry();
 	var particleMat = new THREE.PointsMaterial({
-		color: 'rgb(255, 255, 255)',
-		size: 1,
-		map: new THREE.TextureLoader().load('/assets/textures/particle.jpg'),
+		color: '0xFFFFFF',
+		size : 1,
+		map: new THREE.TextureLoader().load('../../../assets/textures/particle.jpg'),
 		transparent: true,
 		blending: THREE.AdditiveBlending,
 		depthWrite: false
-	});
+	})
 
 	var particleCount = 20000;
 	var particleDistance = 100;
@@ -39,6 +39,8 @@ function init() {
 		particleGeo,
 		particleMat
 	);
+
+	particleSystem.name = 'particleSystem';
 	scene.add(particleSystem);
 
 	// renderer
@@ -61,6 +63,32 @@ function update(renderer, scene, camera, controls) {
 	controls.update();
 	renderer.render(scene, camera);
 	
+	var particleSystem = scene.getObjectByName('particleSystem');
+
+	particleSystem.rotation.y += 0.005;
+
+	particleSystem.geometry.vertices.forEach(function(particle) {
+		particle.x += (Math.random() - 1) * 0.1 ;
+		particle.y += (Math.random() - 0.75) * 0.1;
+		particle.z += (Math.random()) * 0.1;
+
+		if (particle.x < -50) {
+			particle.x = 50;
+		}
+		if (particle.y < -50) {
+			particle.y = 50;
+		}
+		if (particle.z < -50) {
+			particle.z = 50;
+		}
+
+		if (particle.z > 50) {
+			particle.z = -50;
+		}
+	});
+
+	particleSystem.geometry.verticesNeedUpdate = true;
+
 	requestAnimationFrame(function() {
 		update(renderer, scene, camera, controls);
 	});

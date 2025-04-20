@@ -33,9 +33,18 @@ function init() {
 	gui.add(directionalLight.position, 'y', 0, 20);
 	gui.add(directionalLight.position, 'z', 0, 20);
 
-	var camera = new THREE.PerspectiveCamera(
-		45,
-		window.innerWidth/window.innerHeight,
+	// var camera = new THREE.PerspectiveCamera(
+	// 	45,
+	// 	window.innerWidth/window.innerHeight,
+	// 	1,
+	// 	1000
+	// );
+
+	var camera = new THREE.OrthographicCamera(
+		-15,
+		15,
+		15,
+		-15,
 		1,
 		1000
 	);

@@ -26,8 +26,8 @@ function init() {
 
 	// manipulate materials
 	var loader = new THREE.TextureLoader();
-	planeMaterial.map = loader.load('/assets/textures/concrete.jpg');
-	planeMaterial.bumpMap = loader.load('/assets/textures/concrete.jpg');
+	planeMaterial.map = loader.load('../../../assets/textures/concrete.jpg');
+	planeMaterial.bumpMap = loader.load('../../../assets/textures/concrete.jpg');
 	planeMaterial.bumpScale = 0.01;
 
 	var maps = ['map', 'bumpMap'];

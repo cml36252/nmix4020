@@ -1,9 +1,11 @@
 function init() {
 	var scene = new THREE.Scene();
+	var clock = new THREE.Clock();
 
 	// initialize objects
 	var planeMaterial = getMaterial('basic', 'rgb(255, 255, 255)');
 	var plane = getPlane(planeMaterial, 30, 60);
+	plane.name = 'plane-1'
 
 	// manipulate objects
 	plane.rotation.x = Math.PI/2;
@@ -32,7 +34,7 @@ function init() {
 
 	var controls = new THREE.OrbitControls( camera, renderer.domElement );
 
-	update(renderer, scene, camera, controls);
+	update(renderer, scene, camera, controls,clock);
 
 	return scene;
 }
@@ -75,12 +77,23 @@ function getMaterial(type, color) {
 	return selectedMaterial;
 }
 
-function update(renderer, scene, camera, controls) {
+function update(renderer, scene, camera, controls, clock) {
 	controls.update();
+
+	var elapsedTime = clock.getElapsedTime();
+
+	var plane = scene.getObjectByName('plane-1')
+	var planeGeo = plane.geometry;
+
+	planeGeo.vertices.forEach(function(vertex, index) {
+		vertex.z += Math.sin(elapsedTime + index * 0.1) * 0.005
+	});
+
+	planeGeo.verticesNeedUpdate = true;
 
 	renderer.render(scene, camera);
 	requestAnimationFrame(function() {
-		update(renderer, scene, camera, controls);
+		update(renderer, scene, camera, controls, clock);
 	});
 }
 

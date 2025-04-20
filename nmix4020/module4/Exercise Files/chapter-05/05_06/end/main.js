@@ -26,7 +26,7 @@ function init() {
 
 	// manipulate materials
 	// load the cube map
-	var path = '/assets/cubemap/';
+	var path = '../../../assets/cubemap/';
 	var format = '.jpg';
 	var urls = [
 		path + 'px' + format, path + 'nx' + format,
@@ -39,14 +39,14 @@ function init() {
 	scene.background = reflectionCube;
 
 	var loader = new THREE.TextureLoader();
-	planeMaterial.map = loader.load('/assets/textures/concrete.jpg');
-	planeMaterial.bumpMap = loader.load('/assets/textures/concrete.jpg');
-	planeMaterial.roughnessMap = loader.load('/assets/textures/concrete.jpg');
+	planeMaterial.map = loader.load('../../../assets/textures/concrete.jpg');
+	planeMaterial.bumpMap = loader.load('../../../assets/textures/concrete.jpg');
+	planeMaterial.roughnessMap = loader.load('../../../assets/textures/concrete.jpg');
 	planeMaterial.bumpScale = 0.01;
 	planeMaterial.metalness = 0.1;
 	planeMaterial.roughness = 0.7;
 	planeMaterial.envMap = reflectionCube;
-	sphereMaterial.roughnessMap = loader.load('/assets/textures/fingerprints.jpg');
+	sphereMaterial.roughnessMap = loader.load('../../../assets/textures/fingerprints.jpg');
 	sphereMaterial.envMap = reflectionCube;
 
 	var maps = ['map', 'bumpMap', 'roughnessMap'];

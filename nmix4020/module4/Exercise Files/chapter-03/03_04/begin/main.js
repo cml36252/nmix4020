@@ -41,11 +41,16 @@ function init() {
 
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+	
+
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor('rgb(120, 120, 120)');
 	document.getElementById('webgl').appendChild(renderer.domElement);
-	update(renderer, scene, camera);
+
+	controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+	update(renderer, scene, camera, controls);
 
 	return scene;
 }
@@ -96,14 +101,16 @@ function getPointLight(intensity) {
 	return light;
 }
 
-function update(renderer, scene, camera) {
+function update(renderer, scene, camera, controls) {
 	renderer.render(
 		scene,
 		camera
 	);
 
+	controls.update()
+
 	requestAnimationFrame(function() {
-		update(renderer, scene, camera);
+		update(renderer, scene, camera, controls);
 	})
 }
 

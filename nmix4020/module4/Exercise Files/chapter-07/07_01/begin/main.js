@@ -13,6 +13,31 @@ function init() {
 	camera.position.y = 1;
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+	var particleGeo = new THREE.Geometry();
+	var particleMat = new THREE.PointsMaterial({
+		color: '0xFFFFFF',
+		size : 1,
+		map: new THREE.TextureLoader().load('../../../assets/textures/particle.jpg'),
+		transparent: true,
+		blending: THREE.AdditiveBlending,
+		depthWrite: false
+	})
+
+	var particleCount = 20000;
+	var particleDistance = 100
+
+	for (var i = 0; i < particleCount; i++) {
+		var posX = (Math.random() - 0.5) * particleDistance;
+		var posY = (Math.random() - 0.5) * particleDistance;
+		var posZ = (Math.random() - 0.5) * particleDistance;
+		var particle = new THREE.Vector3(posX, posY, posZ);
+
+		particleGeo.vertices.push(particle);
+	}
+
+	var particleSystem = new THREE.Points(particleGeo, particleMat);
+	scene.add(particleSystem);
+
 	// renderer
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);

@@ -1,5 +1,6 @@
 function init() {
 	var scene = new THREE.Scene();
+	var gui = new dat.GUI();
 
 	var enableFog = false;
 
@@ -22,6 +23,9 @@ function init() {
 	scene.add(plane);
 	pointLight.add(sphere);
 	scene.add(pointLight);
+
+	gui.add(pointLight, 'intensity', 0, 10)
+	gui.add(pointLight.position, 'y', 0, 5)
 
 	var camera = new THREE.PerspectiveCamera(
 		45,

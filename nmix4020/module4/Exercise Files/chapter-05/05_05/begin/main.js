@@ -26,11 +26,16 @@ function init() {
 
 	// manipulate materials
 	var loader = new THREE.TextureLoader();
-	planeMaterial.map = loader.load('/assets/textures/concrete.jpg');
-	planeMaterial.bumpMap = loader.load('/assets/textures/concrete.jpg');
+	planeMaterial.map = loader.load('../../../assets/textures/concrete.JPG');
+	planeMaterial.bumpMap = loader.load('../../../assets/textures/concrete.JPG');
+	planeMaterial.roughnessMap = loader.load('../../../assets/textures/concrete.JPG');
 	planeMaterial.bumpScale = 0.01;
+	planeMaterial.roughness = 0.7;
+	planeMaterial.metalness = 0.1;
 
-	var maps = ['map', 'bumpMap'];
+	sphereMaterial.roughnessMap = loader.load('../../../assets/textures/fingerprints.jpg');
+
+	var maps = ['map', 'bumpMap', 'roughnessMap'];
 	maps.forEach(function(mapName) {
 		var texture = planeMaterial[mapName];
 		texture.wrapS = THREE.RepeatWrapping;

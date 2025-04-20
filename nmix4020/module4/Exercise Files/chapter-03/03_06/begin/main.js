@@ -8,23 +8,23 @@ function init() {
 		scene.fog = new THREE.FogExp2(0xffffff, 0.2);
 	}
 	
-	var box = getBox(1, 1, 1);
+	
 	var plane = getPlane(20);
 	var pointLight = getPointLight(1);
 	var sphere = getSphere(0.05);
-
+	var boxGrid = getBoxGrid(10, 1.5);
 	plane.name = 'plane-1';
 
-	box.position.y = box.geometry.parameters.height/2;
+	
 	plane.rotation.x = Math.PI/2;
 	pointLight.position.y = 2;
 	pointLight.intensity = 2;
 
-	scene.add(box);
+	
 	scene.add(plane);
 	pointLight.add(sphere);
 	scene.add(pointLight);
-
+	scene.add(boxGrid);
 	gui.add(pointLight, 'intensity', 0, 10);
 	gui.add(pointLight.position, 'y', 0, 5);
 

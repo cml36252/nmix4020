@@ -9,10 +9,10 @@ function init() {
 		scene.fog = new THREE.FogExp2(0xffffff, 0.2);
 	}
 	
-	var plane = getPlane(30);
+	var plane = getPlane(100);
 	var directionalLight = getDirectionalLight(1);
 	var sphere = getSphere(0.05);
-	var boxGrid = getBoxGrid(10, 1.5);
+	var boxGrid = getBoxGrid(20, 2.5);
 
 	plane.name = 'plane-1';
 	boxGrid.name = 'boxGrid';
@@ -35,11 +35,25 @@ function init() {
 		1000
 	);
 
+	var cameraZRotation = new THREE.Group();
 	var cameraZPosition = new THREE.Group();
 	var cameraXRotation = new THREE.Group();
+	var cameraYPosition = new THREE.Group();
 	var cameraYRotation = new THREE.Group();
 
-	cameraZPosition.add(camera);
+	cameraZRotation.name = 'cameraZRotation';
+	cameraZPosition.name = 'cameraZPosition';
+	cameraYPosition.name = 'cameraYPosition';
+	cameraXRotation.name = 'cameraXRotation';
+	cameraYRotation.name = 'cameraYRotation';
+
+	cameraZRotation.add(camera);
+	cameraYPosition.add(cameraZRotation)
+	cameraZPosition.add(cameraYPosition);
+
+	cameraZPosition.position.z = 100
+	cameraYPosition.position.y = 1;
+
 	cameraXRotation.add(cameraZPosition);
 	cameraYRotation.add(cameraXRotation);
 	scene.add(cameraYRotation);
@@ -47,6 +61,7 @@ function init() {
 	gui.add(cameraZPosition.position, 'z', 0, 100);
 	gui.add(cameraYRotation.rotation, 'y', -Math.PI, Math.PI);
 	gui.add(cameraXRotation.rotation, 'x', -Math.PI, Math.PI);
+	gui.add(cameraZRotation.rotation, 'z', -Math.PI, Math.PI);
 
 	var renderer = new THREE.WebGLRenderer();
 	renderer.shadowMap.enabled = true;
@@ -165,6 +180,11 @@ function update(renderer, scene, camera, controls, clock) {
 	controls.update();
 
 	var timeElapsed = clock.getElapsedTime();
+
+	var cameraZPosition = scene.getObjectByName('cameraZPosition');
+	var cameraZRotation = scene.getObjectByName('cameraZRotation');
+	cameraZRotation.rotation.z = noise.simplex2(timeElapsed * 1.5, timeElapsed * 1.5) * 0.02
+	cameraZPosition.position.z -= 0.25;
 
 	var boxGrid = scene.getObjectByName('boxGrid');
 	boxGrid.children.forEach(function(child, index) {

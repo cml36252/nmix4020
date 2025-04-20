@@ -3,12 +3,12 @@ function init() {
 	var gui = new dat.GUI();
 
 	// initialize objects
-	var sphereMaterial = getMaterial('phong', 'rgb(255, 255, 255)');
+	var sphereMaterial = getMaterial('standard', 'rgb(255, 255, 255)');
 	var sphere = getSphere(sphereMaterial, 1, 24);
-
-	var planeMaterial = getMaterial('phong', 'rgb(255, 255, 255)');
+	
+	var planeMaterial = getMaterial('standard', 'rgb(255, 255, 255)');
 	var plane = getPlane(planeMaterial, 30);
-
+	
 	var lightLeft = getSpotLight(1, 'rgb(255, 220, 180)');
 	var lightRight = getSpotLight(1, 'rgb(255, 220, 180)');
 
@@ -40,8 +40,10 @@ function init() {
 	folder2.add(lightRight.position, 'z', -5, 15);
 
 	var folder3 = gui.addFolder('materials');
-	folder3.add(sphereMaterial, 'shininess', 0, 1000);
-	folder3.add(planeMaterial, 'shininess', 0, 1000);
+	folder3.add(sphereMaterial, 'roughness', 0, 1);
+	folder3.add(planeMaterial, 'roughness', 0, 1);
+	folder3.add(sphereMaterial, 'metalness', 0, 1);
+	folder3.add(planeMaterial, 'metalness', 0, 1);
 	folder3.open();
 
 	// add objects to the scene

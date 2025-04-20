@@ -48,10 +48,26 @@ function init() {
 	renderer.setClearColor('rgb(220, 220, 220)');
 	document.getElementById('webgl').appendChild(renderer.domElement);
 	
+	var composer = new THREE.EffectComposer(renderer);
+	var renderPass = new THREE.RenderPass(scene, camera);
+	//renderPass.renderToScreen = true;
+	composer.addPass(renderPass);
+
+	var vignetteEffect = new THREE.ShaderPass(THREE.VignetteShader);
+	
+	vignetteEffect.uniforms['darkness'].value = 2
+	//vignetteEffect.renderToScreen = true;
+	composer.addPass(vignetteEffect);
+
+	var rgbShiftShader = new THREE.ShaderPass(THREE.RGBShiftShader);
+	rgbShiftShader.renderToScreen = true;
+	rgbShiftShader.uniforms['amount'].value = 0.002;
+	composer.addPass(rgbShiftShader);
+
 	// controls
 	var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-	update(renderer, scene, camera, controls, clock);
+	update(composer, scene, camera, controls, clock);
 
 	return scene;
 }

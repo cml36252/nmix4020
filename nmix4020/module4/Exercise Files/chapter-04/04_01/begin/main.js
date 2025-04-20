@@ -12,6 +12,7 @@ function init() {
 	var directionalLight = getDirectionalLight(1);
 	var sphere = getSphere(0.05);
 	var boxGrid = getBoxGrid(10, 1.5);
+	boxGrid.name = 'box-grid';
 
 	plane.name = 'plane-1';
 
@@ -158,7 +159,14 @@ function update(renderer, scene, camera, controls) {
 		camera
 	);
 
+	var boxGrid = scene.getObjectByName('box-grid');
+	boxGrid.children.forEach(function(child) {
+		child.scale.y = Math.random()
+		child.position.y = child.scale.y/2;
+	})
 	controls.update();
+
+	
 
 	requestAnimationFrame(function() {
 		update(renderer, scene, camera, controls);
