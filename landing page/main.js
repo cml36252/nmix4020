@@ -1,7 +1,6 @@
 function init() {
 	// scene
 	var scene = new THREE.Scene();
-	// var gui = new dat.GUI(); // Removed GUI
 	var clock = new THREE.Clock();
 
 	// Lighting setup
@@ -46,123 +45,27 @@ function init() {
 	});
 
 	// URLs for the logos
-	const linkedInURL = 'https://linkedin.com/in/curtleonard03'; // TODO: Replace with your actual LinkedIn URL
-	const githubURL = 'https://github.com/cml36252'; // TODO: Replace with your actual GitHub URL
-	const clickableObjects = []; // Array to hold clickable logo objects
-	const rotatingLogoMeshes = []; // Array to hold logo meshes for rotation
+	const linkedInURL = 'https://linkedin.com/in/curtleonard03';
+	const githubURL = 'https://github.com/cml36252';
+	const resumeURL =''
+	const clickableObjects = [];
+	const rotatingLogoMeshes = [];
 
-	// Load the office scene
-	const loader = new THREE.GLTFLoader();
-	loader.load(
-		'./small_office/scene.gltf',
-		function (gltf) {
-			console.log('Model loaded successfully');
-			scene.add(gltf.scene);
-			
-			// Adjust the scene position and scale
-			gltf.scene.scale.set(2, 2, 2);
-			gltf.scene.position.set(0, 0, 0);
+	// Variables for camera animation
+	let isZoomed = false;
+	let animationProgress = 0;
+	const animationDuration = 1.0;
+	let computerScreen = null;
+	let originalCameraPosition = null;
+	let originalCameraTarget = null;
+	let zoomedCameraPosition = null;
+	let zoomedCameraTarget = null;
+	let originalFov = null; // Store original FOV
 
-			// Enable shadows and handle materials
-			gltf.scene.traverse((node) => {
-				if (node.isMesh) {
-					node.castShadow = true;
-					node.receiveShadow = true;
-
-					// Log material details, including roughness/metalness maps
-					if (node.material) {
-						console.log(`Mesh: ${node.name}, Material: ${node.material.name}`);
-						// Check for standard PBR material properties
-						if (node.material.isMeshStandardMaterial || node.material.isMeshPhysicalMaterial) {
-							console.log('  Base Color Map:', node.material.map ? node.material.map.name : 'None');
-							console.log('  Normal Map:', node.material.normalMap ? node.material.normalMap.name : 'None');
-							console.log('  Roughness Map:', node.material.roughnessMap ? node.material.roughnessMap.name : 'None');
-							console.log('  Metalness Map:', node.material.metalnessMap ? node.material.metalnessMap.name : 'None');
-							console.log(`  Roughness Value: ${node.material.roughness}, Metalness Value: ${node.material.metalness}`);
-						}
-					}
-
-					// Handle desk material
-					if (node.name.toLowerCase().includes('desk') || node.name.toLowerCase().includes('table')) {
-						if (node.material.isMeshStandardMaterial || node.material.isMeshPhysicalMaterial) {
-							node.material.color.set(0xffffff);
-							node.material.roughness = 0.1;
-							node.material.metalness = 0.1;
-						}
-					}
-
-					// Handle window material
-					if (node.name.toLowerCase().includes('window') || 
-						(node.material && node.material.name && 
-						node.material.name.toLowerCase().includes('window'))) {
-						console.log('Found window mesh:', node.name);
-						
-						node.material.side = THREE.DoubleSide;
-						if (node.material.isMeshStandardMaterial || node.material.isMeshPhysicalMaterial) {
-							node.material.emissive = new THREE.Color(0xeeeeee);
-							node.material.emissiveIntensity = 0.4;
-						}
-						node.material.needsUpdate = true;
-					}
-
-					// Handle backdrop
-					if (node.name.toLowerCase().includes('backdrop') || 
-						(node.material && node.material.name && 
-						(node.material.name.toLowerCase().includes('backdrop') ||
-						node.material.name.toLowerCase().includes('background')))) {
-						node.visible = false;
-					}
-
-					if (node.material) {
-						node.material.needsUpdate = true;
-					}
-				}
-			});
-
-			// After loading the main scene, load the logos
-			loadLogo('./3d_linkedin_logo/scene.gltf', new THREE.Vector3(-2.3, -0.98, -2.3), 0.1, linkedInURL); // Adjusted position for bookshelf
-			loadLogo('./3d_github_logo/scene.gltf', new THREE.Vector3(-2, -0.98, -2.3), 0.1, githubURL); // Adjusted position for bookshelf
-		},
-		function (xhr) {
-			console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-		},
-		function (error) {
-			console.error('An error occurred while loading the model:', error);
-		}
-	);
-
-	// Function to load, scale, position, and prepare logos
-	function loadLogo(path, position, scale, url) {
-		const logoLoader = new THREE.GLTFLoader();
-		logoLoader.load(
-			path,
-			function (gltf) {
-				const logo = gltf.scene;
-				logo.scale.set(scale, scale, scale);
-				logo.position.copy(position);
-
-				// Enable shadows for the logo
-				logo.traverse((node) => {
-					if (node.isMesh) {
-						node.castShadow = true;
-						node.receiveShadow = true; // Optional: if it should receive shadows from other objects
-						rotatingLogoMeshes.push(node); // Add mesh to the array for rotation
-					}
-				});
-
-				// Add user data for click detection
-				logo.userData = { isClickable: true, url: url };
-				clickableObjects.push(logo); // Add the main group for raycasting
-
-				scene.add(logo);
-				console.log(`Logo loaded from ${path}`);
-			},
-			undefined, // Progress callback (optional)
-			function (error) {
-				console.error(`An error occurred while loading logo ${path}:`, error);
-			}
-		);
-	}
+	// Canvas Texture for Portfolio Screen
+	let portfolioCanvas = null;
+	let portfolioCtx = null;
+	let portfolioTexture = null;
 
 	// camera with adjusted clipping planes and position
 	var camera = new THREE.PerspectiveCamera(
@@ -175,6 +78,51 @@ function init() {
 	// Set camera position and lookAt from GUI values
 	camera.position.set(0.77516, 0, 8.6);
 	camera.lookAt(new THREE.Vector3(0, -0.8, 0));
+
+	// Initialize camera animation variables
+	originalFov = camera.fov;
+	originalCameraPosition = camera.position.clone();
+	originalCameraTarget = new THREE.Vector3(0, -0.8, 0);
+	zoomedCameraPosition = new THREE.Vector3(0, 0, 1.5);
+	zoomedCameraTarget = new THREE.Vector3(0, 0, 0);
+
+	// Setup Canvas Texture
+	portfolioCanvas = document.createElement('canvas');
+	portfolioCanvas.width = 2048; // Increased Texture resolution
+	portfolioCanvas.height = 1024;
+	portfolioCtx = portfolioCanvas.getContext('2d');
+	portfolioTexture = new THREE.CanvasTexture(portfolioCanvas);
+	portfolioTexture.flipY = true; // Flipped Y
+
+	// Function to update the screen texture
+	function updatePortfolioTexture(showPortfolio) {
+		if (!portfolioCtx || !portfolioTexture) return;
+
+		// Clear canvas (black screen)
+		portfolioCtx.fillStyle = '#000000';
+		portfolioCtx.fillRect(0, 0, portfolioCanvas.width, portfolioCanvas.height);
+
+		if (showPortfolio) {
+			// Draw white background for text
+			portfolioCtx.fillStyle = '#FFFFFF';
+			portfolioCtx.fillRect(20, 20, portfolioCanvas.width - 40, portfolioCanvas.height - 40); // Add some padding
+
+			// Draw portfolio text
+			portfolioCtx.font = 'bold 48px Arial';
+			portfolioCtx.fillStyle = '#000000';
+			portfolioCtx.textAlign = 'center';
+			portfolioCtx.textBaseline = 'middle';
+			portfolioCtx.fillText('My Portfolio', portfolioCanvas.width / 2, portfolioCanvas.height / 2 - 50);
+			
+			portfolioCtx.font = '32px Arial';
+			portfolioCtx.fillText('Click screen to exit', portfolioCanvas.width / 2, portfolioCanvas.height / 2 + 50);
+		}
+
+		portfolioTexture.needsUpdate = true;
+	}
+
+	// Initial screen state (off)
+	updatePortfolioTexture(false);
 
 	// renderer with shadow mapping enabled
 	var renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -207,6 +155,138 @@ function init() {
 	const raycaster = new THREE.Raycaster();
 	const mouse = new THREE.Vector2();
 
+	// Load the office scene
+	const loader = new THREE.GLTFLoader();
+	loader.load(
+		'./small_office/scene.gltf',
+		function (gltf) {
+			console.log('Model loaded successfully');
+			scene.add(gltf.scene);
+			
+			// Adjust the scene position and scale
+			gltf.scene.scale.set(2, 2, 2);
+			gltf.scene.position.set(0, 0, 0);
+
+			// Enable shadows and handle materials
+			gltf.scene.traverse((node) => {
+				if (node.isMesh) {
+					node.castShadow = true;
+					node.receiveShadow = true;
+
+					// Handle desk material
+					if (node.name.toLowerCase().includes('desk') || node.name.toLowerCase().includes('table')) {
+						if (node.material.isMeshStandardMaterial || node.material.isMeshPhysicalMaterial) {
+							node.material.color.set(0xffffff);
+							node.material.roughness = 0.1;
+							node.material.metalness = 0.1;
+						}
+					}
+
+					// Handle window material
+					if (node.name.toLowerCase().includes('window') || 
+						(node.material && node.material.name && 
+						node.material.name.toLowerCase().includes('window'))) {
+						node.material.side = THREE.DoubleSide;
+						if (node.material.isMeshStandardMaterial || node.material.isMeshPhysicalMaterial) {
+							node.material.emissive = new THREE.Color(0xeeeeee);
+							node.material.emissiveIntensity = 0.4;
+						}
+						node.material.needsUpdate = true;
+					}
+
+					// Handle backdrop
+					if (node.name.toLowerCase().includes('backdrop') || 
+						(node.material && node.material.name && 
+						(node.material.name.toLowerCase().includes('backdrop') ||
+						node.material.name.toLowerCase().includes('background')))) {
+						node.visible = false;
+					}
+
+					// Find computer screen
+					if (node.name.toLowerCase().includes('screen') || 
+						node.name.toLowerCase().includes('monitor')) {
+						computerScreen = node;
+						node.userData.isClickable = true;
+						clickableObjects.push(node);
+
+						// Apply canvas texture to computer screen
+						if (portfolioTexture) {
+							const screenMaterial = new THREE.MeshBasicMaterial({
+								map: portfolioTexture
+							});
+							node.material = screenMaterial;
+							
+							// Store the screen object's world position
+							const boundingBox = new THREE.Box3().setFromObject(node);
+							const screenCenter = new THREE.Vector3();
+							boundingBox.getCenter(screenCenter);
+							
+							// Use fixed coordinates specifically targeting where the screen is in the scene
+							// These are hardcoded values based on scene inspection
+							zoomedCameraTarget = new THREE.Vector3(1.5, 0.2, -0.5); // Target center of screen
+							zoomedCameraPosition = new THREE.Vector3(1.5, 0.2, 0.5); // Position directly in front
+							
+							// Log position info for debugging
+							const worldPos = new THREE.Vector3();
+							node.getWorldPosition(worldPos);
+							console.log("Screen world position:", worldPos);
+							console.log("Using fixed camera target:", zoomedCameraTarget);
+							console.log("Using fixed camera position:", zoomedCameraPosition);
+						}
+					}
+
+					if (node.material) {
+						node.material.needsUpdate = true;
+					}
+				}
+			});
+
+			// After loading the main scene, load the logos
+			loadLogo('./3d_linkedin_logo/scene.gltf', new THREE.Vector3(-2.3, -0.98, -2.3), 0.1, linkedInURL);
+			loadLogo('./3d_github_logo/scene.gltf', new THREE.Vector3(-2, -0.98, -2.3), 0.1, githubURL);
+			loadLogo('./floppy_disk/scene.gltf', new THREE.Vector3(-1.7, -0.98, -2.3), 0.3, resumeURL);
+		},
+		function (xhr) {
+			console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+		},
+		function (error) {
+			console.error('An error occurred while loading the model:', error);
+		}
+	);
+
+	// Function to load, scale, position, and prepare logos
+	function loadLogo(path, position, scale, url) {
+		const logoLoader = new THREE.GLTFLoader();
+		logoLoader.load(
+			path,
+			function (gltf) {
+				const logo = gltf.scene;
+				logo.scale.set(scale, scale, scale);
+				logo.position.copy(position);
+
+				// Enable shadows for the logo
+				logo.traverse((node) => {
+					if (node.isMesh) {
+						node.castShadow = true;
+						node.receiveShadow = true;
+						rotatingLogoMeshes.push(node);
+					}
+				});
+
+				// Add user data for click detection
+				logo.userData = { isClickable: true, url: url };
+				clickableObjects.push(logo);
+
+				scene.add(logo);
+				console.log(`Logo loaded from ${path}`);
+			},
+			undefined,
+			function (error) {
+				console.error(`An error occurred while loading logo ${path}:`, error);
+			}
+		);
+	}
+
 	function onClick(event) {
 		// Calculate mouse position in normalized device coordinates (-1 to +1) for both components
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -216,18 +296,23 @@ function init() {
 		raycaster.setFromCamera(mouse, camera);
 
 		// Calculate objects intersecting the picking ray
-		const intersects = raycaster.intersectObjects(clickableObjects, true); // Check descendants
+		const intersects = raycaster.intersectObjects(clickableObjects, true);
 
 		for (let i = 0; i < intersects.length; i++) {
-			// Find the first ancestor group that is clickable
-			let targetObject = intersects[i].object;
-			while (targetObject && !targetObject.userData.isClickable) {
-				targetObject = targetObject.parent;
+			const targetObject = intersects[i].object;
+			
+			// Handle computer screen click
+			if (targetObject === computerScreen || targetObject.parent === computerScreen) {
+				isZoomed = !isZoomed;
+				animationProgress = 0;
+				updatePortfolioTexture(isZoomed); // Update texture on click
+				return;
 			}
 
-			if (targetObject && targetObject.userData.url) {
+			// Handle logo clicks
+			if (targetObject.userData && targetObject.userData.url) {
 				window.open(targetObject.userData.url, '_blank');
-				return; // Stop checking after the first hit
+				return;
 			}
 		}
 	}
@@ -235,14 +320,51 @@ function init() {
 	window.addEventListener('click', onClick, false);
 
 	function update() {
-		const delta = clock.getDelta(); // Get time delta for frame-rate independent animation
+		const delta = clock.getDelta();
 
 		requestAnimationFrame(update);
 		controls.update();
 
+		// Handle camera animation
+		if (animationProgress < animationDuration) {
+			animationProgress += delta;
+			const t = Math.min(animationProgress / animationDuration, 1);
+			const easeT = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // Ease in-out
+
+			if (isZoomed) {
+				// Disable controls during zoom animation
+				controls.enabled = false;
+				
+				camera.position.lerpVectors(originalCameraPosition, zoomedCameraPosition, easeT);
+				// Use direct positioning of camera instead of lookAt to avoid snapping
+				const lerpedTarget = new THREE.Vector3().lerpVectors(originalCameraTarget, zoomedCameraTarget, easeT);
+				camera.lookAt(lerpedTarget);
+				camera.fov = THREE.MathUtils.lerp(originalFov, 5, easeT); // Even narrower FOV for more focused view
+			} else {
+				// Disable controls during zoom animation
+				controls.enabled = false;
+				
+				camera.position.lerpVectors(zoomedCameraPosition, originalCameraPosition, easeT);
+				// Use direct positioning of camera instead of lookAt to avoid snapping
+				const lerpedTarget = new THREE.Vector3().lerpVectors(zoomedCameraTarget, originalCameraTarget, easeT);
+				camera.lookAt(lerpedTarget);
+				camera.fov = THREE.MathUtils.lerp(5, originalFov, easeT); // Return FOV to original
+			}
+			camera.updateProjectionMatrix(); // IMPORTANT: Update matrix after FOV change
+		} else if (isZoomed) {
+			// When animation is complete and zoomed in, ensure camera stays pointed at screen
+			camera.position.copy(zoomedCameraPosition);
+			camera.lookAt(zoomedCameraTarget);
+			// Keep controls disabled when zoomed in
+			controls.enabled = false;
+		} else {
+			// Re-enable controls when zoomed out and animation complete
+			controls.enabled = true;
+		}
+
 		// Rotate the logos
 		rotatingLogoMeshes.forEach(mesh => {
-			mesh.rotation.z += 0.5 * delta; // Rotate counter-clockwise around Y axis
+			mesh.rotation.z += 0.5 * delta;
 		});
 
 		// Render the scene
