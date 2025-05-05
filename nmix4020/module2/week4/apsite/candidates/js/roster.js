@@ -1,0 +1,3 @@
+let rosterPix = ["brock.webp", "channing.webp", "darnell.webp", "george.webp", "jalen.webp", "james.webp", "jordan.webp", "kelee.webp", "kendall.webp", "kenny.webp", "ladd.webp", "lewis.webp", "nakobe.webp", "nolan.webp", "sedrick.webp", "stetson.webp", "tate.webp", "travon.webp", "warren.webp"]
+let rosterNames = ["Brock Bowers", "Channing Tindall", "Darnell Washington", "George Pickens", "Jalen Carter", "James Cook", "Jordan Davis", "Kelee Ringo", "Kendall Milton", "Kenny McIntosh", "Ladd McConkey", "Lewis Cine", "Nakobe Dean", "Nolan Smith", "Sedrick Van Pran", "Stetson Bennett", "Tate Ratledge", "Travon Walker", "Warren Brinson"]
+
